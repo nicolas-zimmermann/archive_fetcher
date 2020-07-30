@@ -8,6 +8,10 @@ from time import strftime, gmtime
 
 import webbrowser
 
+if len(sys.argv) != 2:
+		print("oups ! Il faut rentrer 1 argument qui est le temps en seconde.")
+		sys.exit()
+
 class compte_rebour(tk.Tk):
 	def __init__(self, to_run):
 		tk.Tk.__init__(self)
@@ -83,6 +87,7 @@ def main():
 	app.minsize(200, 120)
 	app.config(background='#C1120A')
 	app.mainloop()
+
 
 if __name__ == "__main__":
 	main()
