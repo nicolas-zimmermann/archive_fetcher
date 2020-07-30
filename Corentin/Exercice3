@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import tkinter as tk
+import tkinter.font as font
+import sys
+from time import strftime, gmtime
+
+import webbrowser
+
+class compte_rebour(tk.Tk):
+	def __init__(self, to_run):
+		tk.Tk.__init__(self)
+		self.to_run = to_run
+		self.to_run = strftime("%H:%M:%S", gmtime(int(self.to_run)))
+
+		#frame
+		self.frame = tk.Frame(self, bg='#C1120A') # , bd=1, relief="sunken")
+		self.label = tk.Label(self.frame, text=self.to_run, fg="#198205", bg='#C1120A',
+							  font=(self.to_run, 44))
+		#self.label.config(font=(self.to_run, 44))			.config permet de modifier les options
+		#self.label.pack(expand=True)		#quand pas de frame
+		self.label.pack()
+		self.indication = tk.Label(self.frame, text="Pour lancer le minuteur, Cliquer sur start", 
+								   fg="#198205", bg='#C1120A',
+							       font=(self.to_run, 20))
+
+
+		self.img = tk.PhotoImage(file="time-1485384_640.gif")
+		self.canva_img = tk.Canvas(self, width=640, height=423, bg='#C1120A', bd=0, highlightthickness=0)
+		self.canva_img.create_image(640/2, 423/2, image=self.img)
+		self.canva_img.pack(side="left")
+
+		self.indication.pack()
+		self.frame.pack(expand=True)
+		self.start = tk.Button(self, text="Start !", command=self.minuteur, highlightbackground="#C1120A", fg="white")
+		self.start.pack(pady=25, fill="x")
+		self.quit = tk.Button(self, text="quitter", command=self.quit, highlightbackground='#C1120A', fg="white")
+		self.quit.pack()
+
+		self.wiki = tk.Button(self, text="Wikipedia", command=self.wikipedia, highlightbackground='#C1120A', fg="white")
+		self.wiki.pack()
+
+		#self.start.bind("<Button-1>", self.start_button)
+
+
+
+	def minuteur(self):
+		new_time = self.to_run
+		new_time = list(new_time)
+
+		if new_time[6:] != ["0", "0"]:
+			sec = int("".join(new_time[6:]))
+			sec -= 1
+			sec = list(str('{:02d}'.format(sec)))
+			new_time[6:] = sec
+
+		if new_time == ["0","0",":","0","0",":","0","0"]:
+			new_time = "".join(new_time)
+			new_time = "C'est fins !"
+			new_time = list(new_time)
+
+		if new_time[6:] == ["0", "0"]:
+			new_time[6:] = "59"
+			if new_time[4] != "0":
+				new_time[4] = str(int(new_time[4])-1)
+
+		self.to_run = "".join(new_time)
+		self.label.configure(text=self.to_run)
+		self.after(1000, self.minuteur)
+
+	#def start_button(self, lclick):
+	#	self.minuteur()
+
+	def wikipedia(self):
+		webbrowser.open_new("https://fr.wikipedia.org/wiki/Minuteur")
+	
+def main():
+	run = sys.argv[1]
+	app = compte_rebour(to_run=run)
+	app.title("minuteur !")
+	app.geometry("1080x1080")
+	app.minsize(200, 120)
+	app.config(background='#C1120A')
+	app.mainloop()
+
+if __name__ == "__main__":
+	main()
