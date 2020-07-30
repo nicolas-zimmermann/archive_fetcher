@@ -18,7 +18,7 @@ if len(sys.argv) != 3:
         "\t- directory : a path where you want to folder to be created" +
         " e.g '~/Downloads'"
         )    
-    os.exit()
+    sys.exit()
 
 def getHTML(URL):
     """Return a html document from a URL link."""
